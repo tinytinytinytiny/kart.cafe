@@ -21,11 +21,11 @@ onmessage = ({ data: { msg } }) => {
 function updateTime() {
 	const resetDate = new Date().setUTCHours(0, 0, 0, 0) + DAY_TO_MS;
 	postMessage({
-		duration: formatTIme(resetDate - new Date().getTime())
+		duration: formatTime(resetDate - new Date().getTime())
 	});
 }
 
-function formatTIme(ms) {
+function formatTime(ms) {
 	const hours = divide(Math.abs(ms)).divideBy(HOUR_TO_MS);
 	const minutes = hours.remainder().divideBy(MINUTE_TO_MS);
 	const seconds = minutes.remainder().divideBy(SECOND_TO_MS);
