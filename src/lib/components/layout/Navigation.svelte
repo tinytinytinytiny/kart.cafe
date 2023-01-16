@@ -19,10 +19,7 @@
         <hr />
         <a href="/tracks">Tracks</a>
     </div>
-    <div class="timer-wrapper grid">
-        <span>Time until reset</span>
-        <strong><TimeUntilReset /></strong>
-    </div>
+    <TimeUntilReset />
 </nav>
 
 <style lang="scss">
@@ -60,15 +57,6 @@
 
         &:active img {
             transform: translateY(4px);
-        }
-    }
-
-    .timer-wrapper {
-        text-align: right;
-
-        span {
-            font-size: 0.9rem;
-            color: var(--highlight);
         }
     }
 

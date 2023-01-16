@@ -1,35 +1,50 @@
+<svelte:options immutable={true} />
+
 <script>
-    let timeNow = new Date();
-    let timeRemaining = getTimeUntilReset();
-    $: seconds = Math.floor((timeRemaining / 1000) % 60).toString();
-    $: minutes = Math.floor((timeRemaining / 60000) % 60).toString();
-    $: hours = Math.floor(timeRemaining / 3600000).toString();
-    $: timeRemainingString = `${hours}:${
-        minutes.length === 1 ? minutes.padStart(2, "0") : minutes
-    }:${seconds.length === 1 ? seconds.padStart(2, "0") : seconds}`;
+    import { onDestroy, onMount } from "svelte";
+    import { fade } from "svelte/transition";
+    const pad = (x) => x.toString().padStart(2, "0");
 
-    function updateTimer() {
-        if (timeRemaining <= 0) {
-            timeRemaining += 86399000;
-        } else {
-            timeRemaining -= 1000;
-        }
-    }
+    let timer;
+    let timeUntilReset = {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    };
 
-    function getTimeUntilReset() {
-        const target = new Date();
-        target.setUTCHours(0);
-        target.setUTCMinutes(0);
-        target.setUTCSeconds(0);
+    $: ({ hours, minutes, seconds } = timeUntilReset);
 
-        let timeUntilTarget = target.getTime() - timeNow.getTime();
+    onMount(async () => {
+        const Timer = await import("$lib/workers/timeUntilReset.js?worker");
+        timer = new Timer.default();
+        timer.postMessage({ msg: "start" });
+        timer.onmessage = ({ data: { duration } }) =>
+            (timeUntilReset = duration);
+    });
 
-        if (timeUntilTarget < 0) timeUntilTarget += 86400000;
-
-        return timeUntilTarget;
-    }
-
-    setInterval(updateTimer, 1000);
+    onDestroy(() => timer?.postMessage({ msg: "stop" }));
 </script>
 
-{timeRemainingString}
+<div class="timer-wrapper grid">
+    {#if timer}
+        <span transition:fade>Time until next reset</span>
+        <time transition:fade datetime={`PT${hours}H${minutes}M${seconds}S`}>
+            {`${hours}:${pad(minutes)}:${pad(seconds)}`}
+        </time>
+    {/if}
+</div>
+
+<style lang="scss">
+    .timer-wrapper {
+        text-align: right;
+
+        span {
+            font-size: 0.9rem;
+            color: var(--highlight);
+        }
+
+        time {
+            font-weight: bold;
+        }
+    }
+</style>
