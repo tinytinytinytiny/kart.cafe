@@ -1,6 +1,6 @@
 import { fetchCharacters } from '$lib/utils'
 
-export const load = async () => {
+export const load = async ({ params }) => {
     const items = await fetchCharacters()
-    return items[1]
+    return items.find((item) => item.id == params.id)
 }
