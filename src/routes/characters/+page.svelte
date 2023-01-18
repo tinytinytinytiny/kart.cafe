@@ -1,6 +1,10 @@
 <script>
+    import { findImage } from "$lib/utils/";
     import Item from "$lib/components/Item.svelte";
     import ItemMenu from "$lib/components/ItemMenu.svelte";
+    const images = import.meta.glob(
+        "$lib/assets/images/ItemIcon/character/*.png"
+    );
 
     export let data;
     const characters = data.items;
@@ -11,7 +15,7 @@
     <ItemMenu itemWidth="140">
         {#each characters as character}
             <Item
-                imgSrc={character.imgSrc}
+                imgSrc={findImage(images, character.imgSrc)}
                 name="Bazzi"
                 href={`/characters/${character.id}`}
             />

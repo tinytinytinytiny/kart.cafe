@@ -19,6 +19,7 @@
 	"type": "module",
 	"dependencies": {
 		"sass": "^1.57.1",
-		"svelte-preprocess": "^5.0.0"
+		"svelte-preprocess": "^5.0.0",
+		"vite-imagetools": "^4.0.15"
 	}
 }

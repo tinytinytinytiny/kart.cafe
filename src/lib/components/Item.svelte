@@ -1,28 +1,42 @@
 <script>
+    import Picture from "$lib/components/Picture.svelte";
     export let imgSrc, name, href;
 </script>
 
-<li>
-    <a {href} class="box surface grid">
-        <img src={imgSrc} alt="" width="408" height="380" loading="lazy">
+<li class="box surface">
+    <Picture image={imgSrc} alt="" width="408" height="380" loading="lazy" />
+    <a {href}>
         <span>{name}</span>
     </a>
 </li>
 
 <style lang="scss">
-    a {
-        place-items: center;
-        gap: 0.5rem;
-        color: inherit;
-        transition: all 0.1s linear;
+    li {
+        position: relative;
+        text-align: center;
+        transition: 0.1s transform linear;
+        width: 100%;
 
         &:hover {
             transform: translateY(-4px);
         }
+
+        & :global(img) {
+            width: 100%;
+            height: auto;
+        }
     }
 
-    img {
-        width: 100%;
-        height: auto;
+    a {
+        border: none;
+        color: inherit;
+        display: inline-block;
+        margin-block-start: 0.5rem;
+
+        &::before {
+            content: "";
+            inset: 0;
+            position: absolute;
+        }
     }
 </style>
