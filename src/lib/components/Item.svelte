@@ -18,12 +18,26 @@
         width: 100%;
 
         &:hover {
+            background: var(--surface2);
+            border-color: var(--surface3);
             transform: translateY(-4px);
         }
 
         & :global(img) {
             width: 100%;
             height: auto;
+        }
+    }
+
+    a {
+        color: inherit;
+        border: none;
+
+        // Clickable everywhere
+        &::before {
+            content: "";
+            inset: 0;
+            position: absolute;
         }
     }
 

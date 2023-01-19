@@ -23,7 +23,7 @@
     />
     <!-- <img src={data.imgSrc} alt="" width="408" height="380" loading="lazy" /> -->
 
-    {#if data.costumes}
+    {#if data.costumes.length > 0}
         <h2>Costumes</h2>
         <ItemMenu itemWidth="120">
             {#each data.costumes as costume}
